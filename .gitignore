@@ -1,1 +1,4 @@
 api/flask
+api/data
+ui/wordlist:*
+api/config.json

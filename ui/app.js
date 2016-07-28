@@ -24,7 +24,7 @@ app.controller("wpController", function($scope, $http) {
     o.spinner = true;
   };
 
-  $http.get("api.json").then(function(response) {
+  $http.get("api/v1").then(function(response) {
     response.data.methods
       .filter((o) => o.name == "getWords")
       .forEach(function(o) {
