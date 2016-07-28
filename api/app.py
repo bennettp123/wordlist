@@ -44,6 +44,18 @@ if not 'words' in words:
 for o in words['words']:
 	if not 'id' in o:
 		o.id = str(uuid())
+	o['methods'] = [
+		{
+			'name': u'edit',
+			'url': app_prefix + u'/api/v1/words/' + o['id'] + u'/edit',
+			'method': u'POST'
+		},
+		{
+			'name': u'delete',
+			'url': app_prefix + u'/api/v1/words/' + o['id'] + u'/delete',
+			'method': u'POST'
+		}
+	]
 
 @app.errorhandler(400)
 def not_found(error):
@@ -61,9 +73,9 @@ def index():
 def get_words():
 	return jsonify(words)
 
-@app.route(app_prefix + '/api/v1/words/<int:word_id>', methods=['GET'])
+@app.route(app_prefix + '/api/v1/words/<string:word_id>', methods=['GET'])
 def get_word(word_id):
-	word = [word for word in words if word['id'] == word_id]
+	word = [word for word in words['words'] if word['id'] == word_id]
 	if len(word) == 0:
 		abort(404)
 	return jsonify({'word': word[0]})
@@ -75,11 +87,34 @@ def add_word():
 		abort(400)
 	word = {
 		'id': str(uuid()),
-		'word': request.json['word']
+		'word': request.json['word'],
+		'methods': [
+			{
+				'name': u'edit',
+				'url': app_prefix + u'/api/v1/words/' + o['id'] + u'/edit',
+				'method': u'POST'
+			},
+			{
+				'name': u'delete',
+				'url': app_prefix + u'/api/v1/words/' + o['id'] + u'/delete',
+				'method': u'POST'
+			}
+		]
 	}
 	words['words'].append(word)
 	flush_data()
 	return jsonify({'word': word}), 201
+
+@app.route(app_prefix + '/api/v1/words/<string:word_id>/delete', methods=['POST'])
+def delete_word(word_id):
+	word = [word for word in words['words'] if word['id'] == word_id]
+	if len(word) == 0:
+		abort(404)
+	idx = [i for i, word in enumerate(words['words']) if word['id'] == word_id]
+	for i in idx:
+		del words['words'][i]
+	flush_data()
+	return jsonify('deleted'), 200
 
 if __name__ == '__main__':
 	app.run(debug=True)

@@ -23,9 +23,17 @@ app.controller("wpController", function($scope, $http) {
   };
 
   $scope.removeWord = function(o) {
-    
-    var i = $scope.words.indexOf(o);
-    $scope.words.splice(i, 1);
+    o.methods.filter((o) => o.name == "delete")
+      .forEach(function(m) {
+        $http({
+          method: ( typeof m.method === "undefined" ? "POST" : m.method ),
+          url: m.url,
+          data: o
+        }).then(function(response) {
+          var i = $scope.words.indexOf(o);
+          $scope.words.splice(i, 1);
+        });
+      });
   };
 
   $scope.wordDidChange = function(o) {
