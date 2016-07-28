@@ -38,6 +38,16 @@ app.controller("wpController", function($scope, $http) {
 
   $scope.wordDidChange = function(o) {
     o.spinner = true;
+    o.methods.filter((o) => o.name == "edit")
+      .forEach(function(m) {
+        $http({
+          method: ( typeof m.method === "undefined" ? "POST" : m.method ),
+          url: m.url,
+          data: o
+        }).then(function(response) {
+          o.spinner = false;
+        });
+      });
   };
 
   $http.get("api/v1").then(function(response) {
