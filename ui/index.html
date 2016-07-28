@@ -20,16 +20,16 @@
           <form ng-show="o.edit" ng-submit="o.edit=false">
             <input type="text" ng-model="o.word" ng-change="wordDidChange(o)" />
           </form>
-          <span class="small">
-            <span ng-show="o.hover" ng-click="o.edit=true">
+          <span class="small" ng-show="o.hover && !o.edit">
+            <span ng-click="o.edit=true">
               (Edit)
             </span>
-          <span ng-show="o.hover" ng-click="removeWord(o)">
+            <span ng-click="removeWord(o)">
               (Delete)
             </span>
           </span>
           <span ng-show="o.dupe" class="duplicate">
-          Duplicate!
+            Duplicate!
           </span>
         </li>
       </ul>
