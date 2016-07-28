@@ -1,10 +1,10 @@
 # wordpicker
 
-A simple word picker for Tan.
+a simple word picker for Tan.
 
-Frontend demo: https://embed.plnkr.co/DkNFiCzhiU2zUHRRtUEI/
+frontend demo: https://embed.plnkr.co/DkNFiCzhiU2zUHRRtUEI/
 
-Server config
+backend:
 
 ```
 cd api
