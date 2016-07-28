@@ -46,6 +46,11 @@ for o in words['words']:
 		o.id = str(uuid())
 	o['methods'] = [
 		{
+			'name': u'get',
+			'url': app_prefix + u'/api/v1/words/' + o['id'],
+			'method': u'GET'
+		},
+		{
 			'name': u'edit',
 			'url': app_prefix + u'/api/v1/words/' + o['id'] + u'/edit',
 			'method': u'POST'
@@ -85,18 +90,24 @@ def add_word():
 	if not request.json or not 'word' in request.json:
 		print request.json
 		abort(400)
+	id = str(uuid())
 	word = {
-		'id': str(uuid()),
+		'id': id,
 		'word': request.json['word'],
 		'methods': [
 			{
+				'name': u'get',
+				'url': app_prefix + u'/api/v1/words/' + id,
+				'method': u'GET'
+			},
+			{
 				'name': u'edit',
-				'url': app_prefix + u'/api/v1/words/' + o['id'] + u'/edit',
+				'url': app_prefix + u'/api/v1/words/' + id + u'/edit',
 				'method': u'POST'
 			},
 			{
 				'name': u'delete',
-				'url': app_prefix + u'/api/v1/words/' + o['id'] + u'/delete',
+				'url': app_prefix + u'/api/v1/words/' + id + u'/delete',
 				'method': u'POST'
 			}
 		]
@@ -127,13 +138,18 @@ def edit_word(word_id):
 		'word': request.json['word'],
 		'methods': [
 			{
+				'name': u'get',
+				'url': app_prefix + u'/api/v1/words/' + word_id,
+				'method': u'GET'
+			},
+			{
 				'name': u'edit',
-				'url': app_prefix + u'/api/v1/words/' + o['id'] + u'/edit',
+				'url': app_prefix + u'/api/v1/words/' + word_id + u'/edit',
 				'method': u'POST'
 			},
 			{
 				'name': u'delete',
-				'url': app_prefix + u'/api/v1/words/' + o['id'] + u'/delete',
+				'url': app_prefix + u'/api/v1/words/' + word_id + u'/delete',
 				'method': u'POST'
 			}
 		]
