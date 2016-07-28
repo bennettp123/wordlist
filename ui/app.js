@@ -7,12 +7,19 @@ app.controller("wpController", function($scope, $http) {
   $scope.addWord = function(w) {
     var i = {};
     i.word = w;
-    i.id = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-      var r = Math.random() * 16 | 0,
-        v = c == 'x' ? r : (r & 0x3 | 0x8);
-      return v.toString(16);
+    $http.get("api/v1").then(function(response) {
+      response.data.methods
+        .filter((o) => o.name == "addWord")
+        .forEach(function(o) {
+          $http({
+            method: ( typeof o.method === "undefined" ? "POST" : o.method ),
+            url: o.url,
+            data: i
+          }).then(function(response) {
+            $scope.words.push(response.data.word)
+          });
+        });
     });
-    $scope.words.push(i);
   };
 
   $scope.removeWord = function(o) {
