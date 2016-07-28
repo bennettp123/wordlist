@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script data-require="angular.js@1.4.8" data-semver="1.4.8" src="https://code.angularjs.org/1.4.8/angular.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div ng-app="wpApp" ng-controller="wpController">
+    <div ng-show="!wordsDoneLoading">
+      Loading...
+    </div>
+    <div ng-show="wordsDoneLoading">
+      <ul>
+        <li ng-repeat="o in words" ng-mouseover="o.hover=true" ng-mouseleave="o.hover=false">
+          <span ng-show="!o.edit">
+            <span ng-show="o.spinner"> ! </span> {{o.word}}
+          </span>
+          <form ng-show="o.edit" ng-submit="o.edit=false">
+            <input type="text" ng-model="o.word" ng-change="wordDidChange(o)" />
+          </form>
+          <span class="small">
+            <span ng-show="o.hover" ng-click="o.edit=true">
+              (Edit)
+            </span>
+          <span ng-show="o.hover" ng-click="removeWord(o)">
+              (Delete)
+            </span>
+          </span>
+          <span ng-show="o.dupe" class="duplicate">
+          Duplicate!
+          </span>
+        </li>
+      </ul>
+      <form ng-submit="addWord(newWord); newWord='';">
+        <p>
+          Add a word:
+          <input type="text" ng-model="newWord" />
+        </p>
+      </form>
+    </div>
+  </div>
+  <script src="app.js"></script>
+</body>
+
+</html>
