@@ -5,8 +5,8 @@ app.controller("wpController", function($scope, $http) {
   $scope.words = [];
 
   $scope.addWord = function(w) {
-    var i = {};
-    i.word = w;
+    var d = {};
+    d.word = w;
     $http.get("api/v1").then(function(response) {
       response.data.methods
         .filter((o) => o.name == "addWord")
@@ -14,7 +14,7 @@ app.controller("wpController", function($scope, $http) {
           $http({
             method: ( typeof o.method === "undefined" ? "POST" : o.method ),
             url: o.url,
-            data: i
+            data: d
           }).then(function(response) {
             $scope.words.push(response.data.word)
           });
@@ -23,6 +23,7 @@ app.controller("wpController", function($scope, $http) {
   };
 
   $scope.removeWord = function(o) {
+    
     var i = $scope.words.indexOf(o);
     $scope.words.splice(i, 1);
   };
