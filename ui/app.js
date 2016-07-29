@@ -1,4 +1,4 @@
-var app = angular.module("wpApp", []);
+var app = angular.module("wpApp", ['ngSlidedeck']);
 
 app.controller("wpController", function($scope, $http) {
 

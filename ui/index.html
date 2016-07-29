@@ -2,42 +2,66 @@
 <html>
 
 <head>
-  <script data-require="angular.js@1.4.8" data-semver="1.4.8" src="https://code.angularjs.org/1.4.8/angular.js"></script>
+  <script src="bower_components/angular/angular.min.js"></script>
+  <script src="bower_components/angular-animate/angular-animate.min.js"></script>
+  <script src="bower_components/angular-slidedeck/angular-slidedeck.min.js"></script>
+  <link rel="stylesheet" href="bower_components/angular-slidedeck/angular-slidedeck.min.css">
   <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
   <div ng-app="wpApp" ng-controller="wpController">
-    <div ng-show="!wordsDoneLoading">
-      Loading...
+    <div ng-show="!slideshow">
+      <div ng-show="!wordsDoneLoading">
+        Loading...
+      </div>
+      <div ng-show="wordsDoneLoading">
+        <ul>
+          <li ng-repeat="o in words" ng-mouseover="o.hover=true" ng-mouseleave="o.hover=false">
+            <span ng-show="!o.edit">
+              <span ng-show="o.spinner"> ! </span> {{o.word}}
+            </span>
+            <form ng-show="o.edit" ng-submit="o.edit=false">
+              <input type="text" ng-model="o.word" ng-change="wordDidChange(o)" />
+            </form>
+            <span class="small" ng-show="o.hover && !o.edit">
+              <span ng-click="o.edit=true">
+                (Edit)
+              </span>
+              <span ng-click="removeWord(o)">
+                (Delete)
+              </span>
+            </span>
+            <span ng-show="o.dupe" class="duplicate">
+              Duplicate!
+            </span>
+          </li>
+        </ul>
+        <form ng-submit="addWord(newWord); newWord='';">
+          <p>
+            Add a word:
+            <input type="text" ng-model="newWord" />
+          </p>
+        </form>
+        <form ng-submit="slideshow=true">
+          <input type="submit" value="Start Slideshow" />
+        </form>
+      </div>
     </div>
-    <div ng-show="wordsDoneLoading">
-      <ul>
-        <li ng-repeat="o in words" ng-mouseover="o.hover=true" ng-mouseleave="o.hover=false">
-          <span ng-show="!o.edit">
-            <span ng-show="o.spinner"> ! </span> {{o.word}}
-          </span>
-          <form ng-show="o.edit" ng-submit="o.edit=false">
-            <input type="text" ng-model="o.word" ng-change="wordDidChange(o)" />
-          </form>
-          <span class="small" ng-show="o.hover && !o.edit">
-            <span ng-click="o.edit=true">
-              (Edit)
-            </span>
-            <span ng-click="removeWord(o)">
-              (Delete)
-            </span>
-          </span>
-          <span ng-show="o.dupe" class="duplicate">
-            Duplicate!
-          </span>
-        </li>
-      </ul>
-      <form ng-submit="addWord(newWord); newWord='';">
-        <p>
-          Add a word:
-          <input type="text" ng-model="newWord" />
-        </p>
+    <div ng-show="slideshow">
+      <slides>
+        <slide ng-repeat="o in words">
+          <div class="oneWord">
+            <div class="oneWord_inner">
+              <div class="oneWord_inner_inner">
+                {{o.word}}
+              </div>
+            </div>
+          </div>
+        </slide>
+      </slides>
+      <form ng-submit="slideshow=false">
+        <input type="submit" value="End Slideshow" />
       </form>
     </div>
   </div>
