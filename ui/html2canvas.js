@@ -1,0 +1,1 @@
+tableExport.jquery.plugin/html2canvas.js

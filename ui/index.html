@@ -3,6 +3,12 @@
 
 <head>
   <script data-require="angular.js@1.4.8" data-semver="1.4.8" src="https://code.angularjs.org/1.4.8/angular.js"></script>
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="tableExport.js"></script>
+  <script type="text/javascript" src="jquery.base64.js"></script>
+  <script type="text/javascript" src="jspdf/libs/sprintf.js"></script>
+  <script type="text/javascript" src="jspdf/jspdf.js"></script>
+  <script type="text/javascript" src="jspdf/libs/base64.js"></script>
   <link rel="stylesheet" href="style.css" />
 </head>
 
@@ -39,6 +45,25 @@
           <input type="text" ng-model="newWord" />
         </p>
       </form>
+      <form ng-show="!(typeof words !== 'undefined') && words.length > 0">
+        <p>
+          <input type="submit" value="Download Powerpoint"
+                 onclick="$('#hiddenTableForExport').tableExport({type:'powerpoint',escape:'false'});"/>
+        </p>
+        <p>
+          <input type="submit" value="Download PDF"
+                 onclick="
+                   $('#hiddenTableForExport').show();
+                   $('#hiddenTableForExport').tableExport({type:'pdf',escape:'false'});
+                   $('#hiddenTableForExport').hide();
+                 "/>
+        </p>
+      </form>
+      <table style="display:none" id="hiddenTableForExport">
+        <tr ng-show="wordsDoneLoading" ng-repeat="o in words">
+          <td>{{o.word}}</td>
+        </tr>
+      </table>
     </div>
   </div>
   <script src="app.js"></script>
