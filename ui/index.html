@@ -2,46 +2,76 @@
 <html>
 
 <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="viewport" content="width=1024, user-scalable=no" />
   <script data-require="angular.js@1.4.8" data-semver="1.4.8" src="https://code.angularjs.org/1.4.8/angular.js"></script>
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" media="screen" href="deck.js/core/deck.core.css" />
+  <link rel="stylesheet" media="screen" href="deck.js/extensions/navigation/deck.navigation.css" >
+  <link rel="stylesheet" media="screen" href="deck.js/extensions/scale/deck.scale.css" />
+  <link rel="stylesheet" media="screen" href="deck.js/themes/style/web-2.0.css" />
+  <script src="modernizr.custom.js"></script>
 </head>
 
 <body>
   <div ng-app="wpApp" ng-controller="wpController">
-    <div ng-show="!wordsDoneLoading">
-      Loading...
-    </div>
-    <div ng-show="wordsDoneLoading">
-      <ul>
-        <li ng-repeat="o in words" ng-mouseover="o.hover=true" ng-mouseleave="o.hover=false">
-          <span ng-show="!o.edit">
-            <span ng-show="o.spinner"> ! </span> {{o.word}}
-          </span>
-          <form ng-show="o.edit" ng-submit="o.edit=false">
-            <input type="text" ng-model="o.word" ng-change="wordDidChange(o)" />
-          </form>
-          <span class="small" ng-show="o.hover && !o.edit">
-            <span ng-click="o.edit=true">
-              (Edit)
+    <div ng-show="!slideshow">
+      <div ng-show="!wordsDoneLoading">
+        Loading...
+      </div>
+      <div ng-show="wordsDoneLoading">
+        <ul>
+          <li ng-repeat="o in words" ng-mouseover="o.hover=true" ng-mouseleave="o.hover=false">
+            <span ng-show="!o.edit">
+              <span ng-show="o.spinner"> ! </span> {{o.word}}
             </span>
-            <span ng-click="removeWord(o)">
-              (Delete)
+            <form ng-show="o.edit" ng-submit="o.edit=false">
+              <input type="text" ng-model="o.word" ng-change="wordDidChange(o)" />
+            </form>
+            <span class="small" ng-show="o.hover && !o.edit">
+              <span ng-click="o.edit=true">
+                (Edit)
+              </span>
+              <span ng-click="removeWord(o)">
+                (Delete)
+              </span>
             </span>
-          </span>
-          <span ng-show="o.dupe" class="duplicate">
-            Duplicate!
-          </span>
-        </li>
-      </ul>
-      <form ng-submit="addWord(newWord); newWord='';">
-        <p>
-          Add a word:
-          <input type="text" ng-model="newWord" />
-        </p>
+            <span ng-show="o.dupe" class="duplicate">
+              Duplicate!
+            </span>
+          </li>
+        </ul>
+        <form ng-submit="addWord(newWord); newWord='';">
+          <p>
+            Add a word:
+            <input type="text" ng-model="newWord" />
+          </p>
+        </form>
+      </div>
+      <form ng-submit="slideshow=true">
+        <input type="submit" value="Start Slideshow" />
       </form>
     </div>
+    <div class="deck-container" ng-show="slideshow">
+      <section class="slide" ng-repeat="o in words">
+        <h1>{{o.word}}</h1>
+      </section>
+    </div>
+    <form ng-submit="slideshow=false" ng-show="slideshow">
+      <input type="submit" value="End Slideshow" />
+    </form>
   </div>
   <script src="app.js"></script>
+  <script src="jquery.min.js"></script>
+  <script src="deck.js/core/deck.core.js"></script>
+  <script src="deck.js/extensions/navigation/deck.navigation.js"></script>
+  <script src="deck.js/extensions/scale/deck.scale.js"></script>
+  <script>
+    $(function() {
+      $.deck('.slide');
+    });
+  </script>
 </body>
 
 </html>
